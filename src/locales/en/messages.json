@@ -1,10 +1,30 @@
 {
-  "extName": {
-    "message": "name in src/locales/en/messages.json",
-    "description": "Extension name"
-  },
-  "extDescription": {
-    "message": "description in src/locales/en/messages.json",
-    "description": "Extension description"
-  }
+  "extName": { "message": "Cigi Overlay", "description": "Extension name" },
+  "extDescription": { "message": "Control overlay and tools", "description": "Extension description" },
+
+  "popup_title": { "message": "Cigi Overlay", "description": "Popup title" },
+  "popup_subtitle": { "message": "Control your settings", "description": "Popup subtitle" },
+  "popup_overlay_label": { "message": "Enable CIGI Overlay", "description": "Overlay toggle" },
+  "popup_devmode_label": { "message": "Dev Mode", "description": "Dev toggle" },
+  "popup_fab_label": { "message": "Show Floating Button", "description": "FAB toggle" },
+  "popup_version": { "message": "Version $1", "description": "Version label" },
+  "popup_theme_label": { "message": "Dark Mode", "description": "Theme label" },
+  "popup_theme_light": { "message": "Light", "description": "Light theme" },
+  "popup_theme_dark": { "message": "Dark", "description": "Dark theme" },
+
+  "newtab_title": { "message": "New Tab", "description": "New tab title" },
+  "newtab_learn": { "message": "Learn React!", "description": "Learn link" },
+  "newtab_edit": { "message": "Edit src/pages/newtab/Newtab.tsx and save to reload.", "description": "Edit hint" },
+
+  "panel_title": { "message": "Side Panel", "description": "Panel title" },
+
+  "options_title": { "message": "Options", "description": "Options title" },
+
+  "devtools_title": { "message": "Dev Tools", "description": "Devtools title" },
+
+  "content_overlay_title": { "message": "CIGI Overlay", "description": "Overlay window title" },
+  "content_overlay_minimize": { "message": "Minimize", "description": "Minimize button" },
+  "content_overlay_tab_overview": { "message": "Overview", "description": "Tab name" },
+  "content_overlay_tab_layers": { "message": "Layers", "description": "Tab name" },
+  "content_overlay_tab_settings": { "message": "Settings", "description": "Tab name" }
 }

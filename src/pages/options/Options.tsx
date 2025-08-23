@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '@pages/options/Options.css';
+import { t } from '@src/utils/i18n';
+import { initTheme } from '@src/utils/theme';
 
 export default function Options() {
-  return <div className="container">Options</div>;
+  useEffect(() => { initTheme(); document.title = t('options_title'); }, []);
+  return <div className="container">{t('options_title')}</div>;
 }

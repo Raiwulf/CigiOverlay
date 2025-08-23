@@ -2,4 +2,32 @@ body {
   width: 300px;
   height: 260px;
   margin: 0;
+  background-color: var(--cigi-bg);
+  color: var(--cigi-text);
+  font-family: "Comfortaa", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", Arial, sans-serif;
+}
+
+.popup-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.popup-row + .popup-row {
+  border-top: 1px solid var(--cigi-border);
+}
+
+.popup-select {
+  appearance: none;
+  background-color: transparent;
+  color: var(--cigi-text);
+  border: 1px solid var(--cigi-border);
+  border-radius: 8px;
+  padding: 4px 8px;
 }

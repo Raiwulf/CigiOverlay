@@ -11,12 +11,16 @@ import pkg from './package.json';
 
 
 const isDev = process.env.__DEV__ === 'true';
-// set this flag to true, if you want localization support
-const localize = false;
+// set this flag to true to enable localization support
+const localize = true;
+
+const fullVersion = (pkg as any).version as string;
+const numericVersion = typeof fullVersion === 'string' ? fullVersion.split('-')[0] : '0.0.0';
 
 export const baseManifest = {
     ...manifest,
-    version: pkg.version,
+    version: numericVersion,
+    version_name: fullVersion,
     ...(isDev ? devManifest : {} as ManifestV3Export),
     ...(localize ? {
       name: '__MSG_extName__',

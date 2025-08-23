@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
 .your-class {
-    color: aliceblue;
+    color: var(--cigi-text);
+}
+
+html, body {
+  font-family: "Comfortaa", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", Arial, sans-serif;
 }

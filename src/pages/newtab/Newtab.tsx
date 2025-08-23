@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from '@assets/img/logo.svg';
 import '@pages/newtab/Newtab.css';
+import { t } from '@src/utils/i18n';
+import { initTheme } from '@src/utils/theme';
 
 export default function Newtab() {
+  useEffect(() => { initTheme(); }, []);
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/pages/newtab/Newtab.tsx</code> and save to reload.
+          {t('newtab_edit')}
         </p>
         <a
           className="App-link"
@@ -16,7 +19,7 @@ export default function Newtab() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React!
+          {t('newtab_learn')}
         </a>
       </header>
     </div>

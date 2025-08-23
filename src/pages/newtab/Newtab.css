@@ -14,19 +14,18 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: var(--cigi-surface);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: var(--cigi-text);
+  font-family: "Comfortaa", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", Arial, sans-serif;
 }
 
-.App-link {
-  color: #61dafb;
-}
+.App-link { color: var(--cigi-primary); }
 
 @keyframes App-logo-spin {
   from {
