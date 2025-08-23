@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "name in manifest.json",
+  "name": "Cigi Overlay",
   "description": "description in manifest.json",
   "options_ui": {
     "page": "src/pages/options/index.html"
@@ -18,7 +18,8 @@
     "128": "icon-128.png"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "content_scripts": [
     {
@@ -43,7 +44,9 @@
         "icon-128.png",
         "icon-32.png"
       ],
-      "matches": []
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ]
 }
