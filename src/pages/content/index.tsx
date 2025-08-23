@@ -33,7 +33,8 @@ function getOrCreateRootContainer(): HTMLDivElement {
       position: 'fixed',
       inset: '0px',
       zIndex: '2147483646',
-      display: 'block'
+      display: 'block',
+      pointerEvents: 'none'
     } as CSSStyleDeclaration);
     document.documentElement.appendChild(root);
   }
