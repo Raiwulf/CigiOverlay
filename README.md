@@ -2,6 +2,9 @@
   <img src="public/icon-128.png" alt="Cigi Overlay logo"/>
   <h1>Cigi Overlay</h1>
   <p><em>Alpha</em> — Chrome/Firefox extension to overlay a floating control and draggable window on any page.</p>
+  <p>
+    <img src="public/demo.png" alt="Cigi Overlay demo"/>
+  </p>
 </div>
 
 ## Contents
