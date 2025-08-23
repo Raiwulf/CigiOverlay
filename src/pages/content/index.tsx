@@ -14,6 +14,8 @@ const OVERLAY_WINDOW_ID = '__cigi_overlay_window__';
 const ROOT_CONTAINER_ID = '__cigi_overlay_root__';
 const WINDOW_POSITION_KEY = '__cigi_overlay_window_pos__';
 const THEME_STORAGE_KEY = 'cigi_theme';
+const OVERLAY_MIN_WIDTH = 360; // px
+const OVERLAY_MIN_HEIGHT = 200; // px
 
 function log(...args: unknown[]) {
   try { console.log('[CIGI Overlay]', ...args); } catch {}
@@ -170,10 +172,9 @@ function initWindowDrag(win: HTMLDivElement, header: HTMLDivElement): void {
     dragging = false;
     try { header.releasePointerCapture(e.pointerId); } catch {}
     header.style.cursor = 'grab';
-    // persist position
-    const left = parseFloat(win.style.left || '0');
-    const top = parseFloat(win.style.top || '0');
-    saveWindowPosition(left, top);
+    // persist rect (position and size)
+    const rect = win.getBoundingClientRect();
+    saveWindowRect(rect.left, rect.top, rect.width, rect.height);
   };
 
   header.addEventListener('pointerdown', onPointerDown);
@@ -233,6 +234,8 @@ function initWindowResizeHandle(win: HTMLDivElement): void {
     if (!resizing) return;
     resizing = false;
     try { handle.releasePointerCapture(e.pointerId); } catch {}
+    const rect = win.getBoundingClientRect();
+    saveWindowRect(rect.left, rect.top, rect.width, rect.height);
   };
 
   handle.addEventListener('pointerdown', onPointerDown);
@@ -242,8 +245,10 @@ function initWindowResizeHandle(win: HTMLDivElement): void {
   win.appendChild(handle);
 }
 
-function saveWindowPosition(left: number, top: number): void {
-  const pos = { left, top };
+type OverlayWindowRect = { left: number; top: number; width: number; height: number };
+
+function saveWindowRect(left: number, top: number, width: number, height: number): void {
+  const pos: OverlayWindowRect = { left, top, width, height };
   try {
     if (hasChromeStorage()) {
       chrome.storage.local.set({ [WINDOW_POSITION_KEY]: pos });
@@ -253,14 +258,18 @@ function saveWindowPosition(left: number, top: number): void {
   } catch {}
 }
 
-function applySavedPosition(win: HTMLDivElement): void {
+function applySavedRect(win: HTMLDivElement): void {
   try {
     const apply = (pos: any) => {
       if (!pos || typeof pos.left !== 'number' || typeof pos.top !== 'number') return;
-      const w = win.offsetWidth || 720;
-      const h = win.offsetHeight || 400;
-      const clampedLeft = clamp(pos.left, 4, Math.max(4, window.innerWidth - w - 4));
-      const clampedTop = clamp(pos.top, 4, Math.max(4, window.innerHeight - h - 4));
+      const savedWidth = typeof pos.width === 'number' ? pos.width : (win.offsetWidth || 720);
+      const savedHeight = typeof pos.height === 'number' ? pos.height : (win.offsetHeight || 400);
+      const clampedWidth = clamp(savedWidth, OVERLAY_MIN_WIDTH, Math.max(OVERLAY_MIN_WIDTH, window.innerWidth - 8));
+      const clampedHeight = clamp(savedHeight, OVERLAY_MIN_HEIGHT, Math.max(OVERLAY_MIN_HEIGHT, window.innerHeight - 8));
+      win.style.width = clampedWidth + 'px';
+      win.style.height = clampedHeight + 'px';
+      const clampedLeft = clamp(pos.left, 4, Math.max(4, window.innerWidth - clampedWidth - 4));
+      const clampedTop = clamp(pos.top, 4, Math.max(4, window.innerHeight - clampedHeight - 4));
       win.style.left = clampedLeft + 'px';
       win.style.top = clampedTop + 'px';
       win.style.right = 'auto';
@@ -462,8 +471,8 @@ function getOrCreateOverlayWindow(): HTMLDivElement {
     // enable dragging by header
     initWindowDrag(win, header);
 
-    // try to restore previous saved position
-    applySavedPosition(win);
+    // try to restore previous saved rect (position and size)
+    applySavedRect(win);
 
     // add bottom-right resize handle
     initWindowResizeHandle(win);
@@ -615,6 +624,11 @@ function init(): void {
   window.addEventListener('beforeunload', () => {
     removeStorageListener();
     removeResize();
+    const win = document.getElementById(OVERLAY_WINDOW_ID) as HTMLDivElement | null;
+    if (win) {
+      const rect = win.getBoundingClientRect();
+      saveWindowRect(rect.left, rect.top, rect.width, rect.height);
+    }
   });
 }
 
