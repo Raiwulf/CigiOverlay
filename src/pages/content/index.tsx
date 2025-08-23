@@ -393,26 +393,26 @@ function getOrCreateOverlayWindow(): HTMLDivElement {
 
     const header = document.createElement('div');
     Object.assign(header.style, {
-      height: '48px',
+      height: '36px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '0 14px',
+      padding: '0 10px',
       borderBottom: '1px solid var(--cigi-border)',
       cursor: 'grab',
       background: 'transparent'
     } as CSSStyleDeclaration);
     const title = document.createElement('div');
     title.textContent = t('content_overlay_title');
-    Object.assign(title.style, { fontWeight: '700', letterSpacing: '0.2px' } as CSSStyleDeclaration);
+    Object.assign(title.style, { fontWeight: '700', letterSpacing: '0.2px', fontSize: '12px' } as CSSStyleDeclaration);
     const controls = document.createElement('div');
-    Object.assign(controls.style, { display: 'flex', alignItems: 'center', gap: '6px' } as CSSStyleDeclaration);
+    Object.assign(controls.style, { display: 'flex', alignItems: 'center', gap: '4px' } as CSSStyleDeclaration);
     const themeBtn = createThemeToggleButton();
     const minimizeBtn = document.createElement('button');
     minimizeBtn.textContent = '–';
     minimizeBtn.title = t('content_overlay_minimize');
     Object.assign(minimizeBtn.style, {
-      width: '28px', height: '28px', borderRadius: '6px',
+      width: '24px', height: '24px', borderRadius: '5px',
       border: '1px solid var(--cigi-border)',
       background: 'transparent', color: 'var(--cigi-text)',
       cursor: 'pointer'
@@ -431,14 +431,15 @@ function getOrCreateOverlayWindow(): HTMLDivElement {
     } as CSSStyleDeclaration);
     const tabs = document.createElement('div');
     Object.assign(tabs.style, {
-      width: '180px', borderRight: '1px solid var(--cigi-border)',
-      padding: '8px', display: 'flex', flexDirection: 'column', gap: '6px'
+      width: '150px', borderRight: '1px solid var(--cigi-border)',
+      padding: '6px', display: 'flex', flexDirection: 'column', gap: '4px'
     } as CSSStyleDeclaration);
     const styleNav = (el: HTMLButtonElement) => {
       Object.assign(el.style, {
-        textAlign: 'left', padding: '6px 10px',
-        borderRadius: '8px', border: '1px solid var(--cigi-border)',
+        textAlign: 'left', padding: '4px 8px',
+        borderRadius: '6px', border: '1px solid var(--cigi-border)',
         background: 'rgba(255,255,255,0.04)', color: 'var(--cigi-text)', cursor: 'pointer',
+        fontSize: '12px',
         transition: 'background 120ms ease, transform 120ms ease, border-color 120ms ease'
       } as CSSStyleDeclaration);
       el.addEventListener('mouseenter', () => {
@@ -452,15 +453,51 @@ function getOrCreateOverlayWindow(): HTMLDivElement {
       el.addEventListener('focus', () => { el.style.borderColor = 'var(--cigi-primary)'; });
       el.addEventListener('blur', () => { el.style.borderColor = 'var(--cigi-border)'; });
     };
-    ;[t('content_overlay_tab_overview'), t('content_overlay_tab_layers'), t('content_overlay_tab_settings')].forEach(tl => {
+    const buttons: HTMLButtonElement[] = [];
+    let views: HTMLDivElement[] = [];
+    const markActive = (btn: HTMLButtonElement, active: boolean) => {
+      btn.style.background = active ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.04)';
+      btn.style.borderColor = active ? 'var(--cigi-primary)' : 'var(--cigi-border)';
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    };
+    const setActive = (index: number) => {
+      views.forEach((v, i) => { v.style.display = i === index ? 'block' : 'none'; });
+      buttons.forEach((b, i) => markActive(b, i === index));
+    };
+    ;[t('content_overlay_tab_overview'), t('content_overlay_tab_layers'), t('content_overlay_tab_settings')].forEach((tl, idx) => {
       const item = document.createElement('button');
+      item.type = 'button';
       item.textContent = tl;
+      item.setAttribute('role', 'tab');
+      item.setAttribute('aria-selected', 'false');
       styleNav(item as HTMLButtonElement);
+      item.addEventListener('click', () => setActive(idx));
       tabs.appendChild(item);
+      buttons.push(item);
     });
     const panel = document.createElement('div');
-    Object.assign(panel.style, { flex: '1 1 auto', padding: '10px' } as CSSStyleDeclaration);
-    // Empty panel area for now
+    Object.assign(panel.style, { flex: '1 1 auto', padding: '8px' } as CSSStyleDeclaration);
+    const makeView = (title: string, desc: string) => {
+      const v = document.createElement('div');
+      Object.assign(v.style, { display: 'none', height: '100%', overflow: 'auto' } as CSSStyleDeclaration);
+      const h = document.createElement('h3');
+      Object.assign(h.style, { fontSize: '13px', fontWeight: '700', margin: '0 0 6px 0', letterSpacing: '0.2px' } as CSSStyleDeclaration);
+      h.textContent = title;
+      const p = document.createElement('p');
+      Object.assign(p.style, { fontSize: '12px', margin: '0', opacity: '0.9' } as CSSStyleDeclaration);
+      p.textContent = desc;
+      v.appendChild(h);
+      v.appendChild(p);
+      return v;
+    };
+    const viewOverview = makeView(t('content_overlay_tab_overview'), 'Overview content placeholder');
+    const viewLayers = makeView(t('content_overlay_tab_layers'), 'Layers content placeholder');
+    const viewSettings = makeView(t('content_overlay_tab_settings'), 'Settings content placeholder');
+    panel.appendChild(viewOverview);
+    panel.appendChild(viewLayers);
+    panel.appendChild(viewSettings);
+    views = [viewOverview, viewLayers, viewSettings];
+    setActive(0);
 
     body.appendChild(tabs);
     body.appendChild(panel);
