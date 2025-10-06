@@ -841,10 +841,10 @@
   dependencies:
     "@babel/types" "^7.20.7"
 
-"@types/chrome@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.1.4.tgz#74a3a6c892e2c5d0a98997c4f038cb67cfbb0fa9"
-  integrity sha512-vfISO7SPppN3OKVUqWujtZ4vux3nhDqKaHYEHgfQuPARHuWJ3jjyc1s13H0ckzEc86/neTkCl1TeW72UK6jYKA==
+"@types/chrome@^0.1.22":
+  version "0.1.22"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.1.22.tgz#6cc9e8c95457a9158dfacfc288a625bc8eb85e48"
+  integrity sha512-5uXbw/3V+Pdu9BaoTvudvutITxeIiC0CK5WhQr8lzEhAQ70lTpe5ebnoai9iQrqWjhIa3qynYhKV0NN0MKv4qA==
   dependencies:
     "@types/filesystem" "*"
     "@types/har-format" "*"
